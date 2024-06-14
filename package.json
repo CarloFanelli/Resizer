@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "npx tsc && npx serve",
+    "watch" : "tsc -w"
+  },
+  "dependencies": {
+    "typescript": "^5.4.5"
+  }
+}
