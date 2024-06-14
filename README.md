@@ -19,6 +19,8 @@ br
 `import Resize from './bin/resize.js'`
 use your path
 
+## all the elements need an id to save in the localStorage properly
+
 **this library expose a contructor:**
 
 ```
