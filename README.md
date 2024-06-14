@@ -15,6 +15,7 @@ this library implements the resizing of two or more div.
 
 ## usage
 *import the 'Resize'*
+br
 `import Resize from './bin/resize.js'`
 use your path
 
