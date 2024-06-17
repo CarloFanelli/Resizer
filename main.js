@@ -1,12 +1,12 @@
 import Resize from './bin/Resize.js'
 
-const resizableElement = document.querySelectorAll('.resizableElement');
+const resizableElements = document.querySelectorAll('.resizableElement');
 
-
+console.log(resizableElements);
 const resize = new Resize(
     {
-      resizableElement:resizableElement,
-      resizerClassList : 'resizer',
+      resizableElements:resizableElements,
+      resizerClassList : 'resizer cursor-col-resize w-1 hover:border border-blue-500',
       saveName: 'resizableElements',
       classToCheck: 'hidden'
     }
