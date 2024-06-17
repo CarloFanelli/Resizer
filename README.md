@@ -1,5 +1,6 @@
 # Resize
 this library implements the resizing of two or more div.
+[demo using css tailwind](https://carlofanelli.github.io/Resizer/)
 
 ## Installation
 `git clone https://github.com/CarloFanelli/Resizer`
