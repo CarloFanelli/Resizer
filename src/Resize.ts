@@ -1,14 +1,14 @@
 import Resizer from "./Resizer.js";
 
 interface ResizeOptions {
-  resizableElement: HTMLElement[];
+  resizableElements: HTMLElement[];
   resizerClassList: string;
   saveName: string;
   classToCheck: string;
 }
 
 class Resize {
-  private resizableElement: HTMLElement[];
+  private resizableElements: HTMLElement[];
   private resizerClassList: string;
   private memoryName: string;
   private classToCheck: string;
@@ -17,20 +17,20 @@ class Resize {
   constructor(option: ResizeOptions) {
     console.log(option);
 
-    this.resizableElement = option.resizableElement;
+    this.resizableElements = option.resizableElements;
     this.resizerClassList = option.resizerClassList;
     this.memoryName = option.saveName;
     this.classToCheck = option.classToCheck;
 
-    this.giveSize(this.resizableElement);
+    this.giveSize(this.resizableElements);
     this.resizer = new Resizer(this.resizerClassList);
 
-    this.addResizer(this.resizableElement, this.resizerClassList).forEach(resizer => {
-      this.moveResizer(resizer, this.resizableElement);
+    this.addResizer(this.resizableElements, this.resizerClassList).forEach(resizer => {
+      this.moveResizer(resizer, this.resizableElements);
     });
 
-    this.resizableElement.forEach(el => {
-      this.observeElementChanges(el, this.resizableElement, this.classToCheck);
+    this.resizableElements.forEach(el => {
+      this.observeElementChanges(el, this.resizableElements, this.classToCheck);
     });
   }
 
@@ -39,11 +39,9 @@ class Resize {
       for (const mutation of mutationsList) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           if (targetElement.classList.contains(classToCheck)) {
-            console.log('La classe ' + classToCheck + ' è stata aggiunta all\'elemento.');
-            this.giveSize(this.checkResizableElement(this.resizableElement));
+            this.giveSize(this.checkResizableElement(this.resizableElements));
           } else {
-            console.log('la classe ' + classToCheck + ' è stata rimossa');
-            this.giveSize(this.checkResizableElement(this.resizableElement));
+            this.giveSize(this.checkResizableElement(this.resizableElements));
           }
         }
       }
