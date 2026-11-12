@@ -4,7 +4,7 @@ Resizable side-by-side panels in TypeScript, with no framework and no dependenci
 
 Give it a list of sibling elements and it inserts a draggable handle between each pair, lets the user resize them with the mouse, **remembers the sizes in `localStorage`** and re-distributes space automatically when a panel is hidden or shown.
 
-**[Live demo](https://carlofanelli.github.io/Resizer/)** (styled with Tailwind)
+**[Live demo](https://carlofanelli.github.io/Resizer/)**
 
 ## Features
 
