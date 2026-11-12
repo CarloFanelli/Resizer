@@ -1,29 +1,109 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-
+  <title>Resizer demo: resizable panels that remember their widths</title>
+  <meta name="description" content="Live demo of Resizer, a dependency-free TypeScript library for resizable side-by-side panels that saves their widths in localStorage.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&display=swap">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div class="p-12">
-    <div class="btn" onclick="document.getElementById('resizableContainer').firstElementChild.classList.toggle('hidden')">hide first div</div>
-  </div>
-  <div id="resizableContainer" class="m-4 p-3 border border-red-500 flex resizableContainer">
 
-    <div id="resizable-1" class="my-2 resizableElement p-2 border border-yellow-500 h-52 w-1/4"></div>
+  <header class="masthead">
+    <span class="wordmark">Resizer</span>
+    <a href="https://github.com/CarloFanelli/Resizer">Source on GitHub</a>
+  </header>
 
-    <div id="resizable-2" class="my-2 resizableElement p-2 border border-yellow-500 h-52 w-1/4"></div>
-    
-    <div id="resizable-3" class=" my-2 resizableElement p-2 border border-yellow-500 h-52 w-1/4"></div>
-    
-    <div id="resizable-4" class="my-2 resizableElement p-2 border border-yellow-500 h-52 w-1/4"></div>
+  <main>
+    <div class="intro">
+      <h1>Drag a line. Reload the page. The widths are still there.</h1>
+      <p>
+        Resizer puts a draggable handle between sibling elements, saves their widths in
+        <code>localStorage</code> and shares out the space again when one of them is hidden.
+        Written in TypeScript, with no dependencies.
+      </p>
+      <p class="touch-note">
+        Resizer listens for mouse events, so the handles do not respond to touch yet.
+        Open this page on a computer to try it.
+      </p>
+    </div>
 
-  </div>
-  
+    <section class="stage" aria-label="Four resizable panels">
+      <div class="ruler" aria-hidden="true">
+        <span style="--at: 10">10</span>
+        <span style="--at: 20">20</span>
+        <span style="--at: 30">30</span>
+        <span style="--at: 40">40</span>
+        <span style="--at: 50">50</span>
+        <span style="--at: 60">60</span>
+        <span style="--at: 70">70</span>
+        <span style="--at: 80">80</span>
+        <span style="--at: 90">90</span>
+      </div>
 
-</div>
+      <div class="panels" id="panels">
+        <div class="resizableElement panel panel--blue" id="resizable-1">
+          <span class="panel__id">#resizable-1</span>
+          <output class="panel__width">25%</output>
+        </div>
+        <div class="resizableElement panel panel--pink" id="resizable-2">
+          <span class="panel__id">#resizable-2</span>
+          <output class="panel__width">25%</output>
+        </div>
+        <div class="resizableElement panel panel--sun" id="resizable-3">
+          <span class="panel__id">#resizable-3</span>
+          <output class="panel__width">25%</output>
+        </div>
+        <div class="resizableElement panel panel--mint" id="resizable-4">
+          <span class="panel__id">#resizable-4</span>
+          <output class="panel__width">25%</output>
+        </div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button type="button" id="toggleLast">Hide the last panel</button>
+      <button type="button" id="clearSaved">Clear saved widths</button>
+    </div>
+
+    <div class="details">
+      <section>
+        <h2>What Resizer saved</h2>
+        <p>
+          After every drag the widths are written, as percentages of the row, to
+          <code>localStorage["resizableElementsSize"]</code>.
+        </p>
+        <p id="savedEmpty" class="empty">Nothing saved yet. Drag a line and the widths appear here.</p>
+        <pre id="saved" hidden></pre>
+      </section>
+
+      <section>
+        <h2>The code behind this page</h2>
+        <p>Every panel needs an <code>id</code>. The handles are created for you.</p>
+<pre><code>import Resize from './bin/Resize.js';
+
+const panels = document.querySelectorAll('.resizableElement');
+
+new Resize({
+  resizableElements: [...panels],
+  resizerClassList: 'resizer',    // classes for each handle
+  saveName: 'resizableElements',  // localStorage key prefix
+  classToCheck: 'hidden'          // class that hides a panel
+});</code></pre>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      Resizer is a small open source library by Carlo Fanelli.
+      <a href="https://github.com/CarloFanelli/Resizer#readme">Read the docs</a>
+    </p>
+  </footer>
+
   <script type="module" src="./main.js"></script>
 </body>
 </html>

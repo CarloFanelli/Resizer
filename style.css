@@ -1,0 +1,308 @@
+:root {
+  --paper: #f4f5fa;
+  --ink: #1d1b4b;
+  --ink-soft: #4b4a78;
+  --blue: #86b6ff;
+  --pink: #ff94b4;
+  --sun: #ffcf4a;
+  --mint: #62dca8;
+
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --display: "Anybody", "Arial Narrow", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
+}
+
+a:hover {
+  text-decoration-color: var(--pink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+}
+
+/* ---------- masthead and intro ---------- */
+
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.5rem var(--gutter) 0;
+  font-weight: 600;
+}
+
+.wordmark {
+  font-stretch: 150%;
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1.5rem clamp(2rem, 5vw, 4rem);
+  padding: clamp(2rem, 4.5vw, 3.25rem) var(--gutter) clamp(2rem, 4vw, 2.75rem);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4.3vw, 3.5rem);
+  font-stretch: 112%;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.intro p {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 52rem) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.touch-note {
+  display: none;
+  grid-column: 1 / -1;
+  padding: 0.75rem 1rem;
+  border-left: 6px solid var(--sun);
+  background: #fff;
+}
+
+@media (pointer: coarse) {
+  .intro p.touch-note {
+    display: block;
+    color: var(--ink);
+  }
+}
+
+/* ---------- the stage: ruler + panels ---------- */
+
+.ruler {
+  position: relative;
+  height: 2.25rem;
+  border-bottom: 2px solid var(--ink);
+  background:
+    linear-gradient(to right, var(--ink) 2px, transparent 2px) -1px 100% / 10% 0.6rem repeat-x,
+    linear-gradient(to right, var(--ink) 1px, transparent 1px) -0.5px 100% / 2% 0.3rem repeat-x;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ruler span {
+  position: absolute;
+  left: calc(var(--at) * 1%);
+  top: 0.2rem;
+  transform: translateX(-50%);
+}
+
+.panels {
+  position: relative;
+  display: flex;
+  height: clamp(15rem, 44vh, 25rem);
+}
+
+.panel {
+  flex: 1 1 auto;
+  width: 25%;
+  min-width: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem clamp(0.5rem, 6cqw, 1.25rem);
+  background: var(--fill);
+}
+
+.panel--blue { --fill: var(--blue); }
+.panel--pink { --fill: var(--pink); }
+.panel--sun  { --fill: var(--sun); }
+.panel--mint { --fill: var(--mint); }
+
+.panel__id {
+  font-size: clamp(0.6875rem, 9cqw, 0.875rem);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.panel__width {
+  align-self: flex-start;
+  font-size: min(7.5rem, 44cqw);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Handles are zero-width, so the panels always add up to 100% of the row.
+   The grab area and the visible line are drawn by the pseudo-elements. */
+.resizer {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 0;
+}
+
+.resizer::before {
+  content: "";
+  position: absolute;
+  inset: 0 -8px;
+  cursor: col-resize;
+  background: linear-gradient(var(--ink), var(--ink)) center / 2px 100% no-repeat;
+}
+
+.resizer:hover::before,
+.resizer:active::before {
+  background-size: 6px 100%;
+}
+
+/* The tab that marks each handle on the ruler */
+.resizer::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: -0.8rem;
+  width: 16px;
+  height: 0.8rem;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  pointer-events: none;
+}
+
+/* A handle with a hidden panel on its right has nothing to resize */
+.resizer:has(+ .panel.hidden) {
+  display: none;
+}
+
+/* ---------- controls ---------- */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1.5rem var(--gutter) 0;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- saved widths + usage ---------- */
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+  padding: clamp(3rem, 7vw, 5rem) var(--gutter);
+}
+
+.details section {
+  min-width: 0;
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-stretch: 112%;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.details p {
+  max-width: 52ch;
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+}
+
+.details p code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.details .empty {
+  padding: 1rem 1.25rem;
+  border: 2px dashed var(--ink-soft);
+  color: var(--ink);
+}
+
+pre {
+  margin: 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  tab-size: 2;
+}
+
+pre code {
+  font-size: inherit;
+}
+
+footer {
+  padding: 1.5rem var(--gutter) 2.5rem;
+  border-top: 2px solid var(--ink);
+}
+
+footer p {
+  margin: 0;
+}
